@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Test TWIG
+{% endblock %}
+
+{% block body %}
+    <p>Nom : {{ person.nom }}</p>
+    <p>Age : {{person.age }}</p>
+    {% if person.age >= 18 %}
+        <p>Cette personne est majeure</p>
+    {% else %}
+        <p>Cette personne est mineure</p>
+    {% endif %}
+
+    <ul>
+        {% for tel in person.telephone %}
+            <li>{{tel}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
