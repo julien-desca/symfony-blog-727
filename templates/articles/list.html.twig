@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des articles {% endblock %}
+
+{% block body %}
+    <h1>Liste des articles</h1>
+    <ul>
+        {% for article in articleList %}
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.content|u.truncate(25, '...') }}</p>
+            <a class="btn btn-primary" href={{ path("get_article", {id : article.id}) }}>Voir plus</a>
+            <a class="btn btn-danger" href={{ path("delete_article", {id: article.id}) }}>Supprimer cet article</a>
+            <hr/>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-primary" href={{ path("create_article") }}> Créer un nouvel article</a>
+{% endblock %}
+
