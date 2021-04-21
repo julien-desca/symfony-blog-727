@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des auteurs {% endblock %}
+
+{% block body %}
+    <h1>Liste des auteurs</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {% for author in authorList %}
+                <tr>
+                    <td>{{ author.id }}</td>
+                    <td>{{ author.lastName }}</td>
+                    <td>{{ author.firstName }}</td>
+                    <td>
+                        <a href={{ path("get_author", {id:author.id}) }}>Détails</a>
+                        <a href={{ path("delete_author", {id:author.id}) }}>Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href={{ path("create_author")}}>Ajouter un auteur</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Auteur #{{author.id}} {% endblock %}
+
+{% block body %}
+    <h1>{{author.firstName}} {{author.lastName }}</h1>
+    <p>Id: {{ author.id }}</p>
+    <p>E-mail : {{ author.email }}</p>
+    <p>Date de naissance : {{ author.birthDate|date('d/m/Y') }}</p>
+    
+{% endblock %}

@@ -3,14 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,11 +35,7 @@ class ArticleController extends AbstractController{
     public function createArticle(Request $request){
         $article = new Article();
 
-        $form = $this->createFormBuilder($article)
-                    ->add('title', TextType::class, ['label'=>'Titre'])
-                    ->add('content', TextareaType::class, ['label'=>'Contenu de l\'article'])
-                    ->add('save', SubmitType::class, ['label' => 'Enregister'])
-                    ->getForm();
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
 
@@ -84,6 +77,32 @@ class ArticleController extends AbstractController{
         $this->manager->flush();
         
         return $this->redirectToRoute('list_article');
+    }
+
+    /**
+     * @Route("/articles/update/{id}", name="update_article", requirements={"id"="\d+"})
+     */
+    public function updateArticle(Request $request, int $id){
+        //recuperation de l'entité à éditer
+        $article = $this->articleRepository->find($id);
+        if($article == null){
+            throw new HttpException(404);
+        }
+
+        //création du formulaire
+        $form = $this->createForm(ArticleType::class, $article);
+
+        //liaison formulaire/requete
+        $form->handleRequest($request);
+
+        //soumission du formulaire
+        if($form->isSubmitted() && $form->isValid()){
+            $this->manager->persist($article);
+            $this->manager->flush();
+            return $this->redirectToRoute('list_article');
+        }
+
+        return $this->render('articles/update.html.twig', ['form' => $form->createView()]);
     }
 }
 
