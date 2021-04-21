@@ -7,7 +7,8 @@
     <ul>
         {% for article in articleList %}
             <h2>{{ article.title }}</h2>
-            <p>{{ article.content|u.truncate(25, '...') }}</p>
+            <p>{{ article.content|u.truncate(50, '...') }}</p>
+            <p>Ecrit par : {{ article.author.firstName }} {{article.author.lastName }}</p>
             <a class="btn btn-primary" href={{ path("get_article", {id : article.id}) }}>Voir plus</a>
             <a class="btn btn-danger" href={{ path("delete_article", {id: article.id}) }}>Supprimer cet article</a>
             <hr/>

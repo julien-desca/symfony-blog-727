@@ -7,5 +7,6 @@
     <p>Id: {{ author.id }}</p>
     <p>E-mail : {{ author.email }}</p>
     <p>Date de naissance : {{ author.birthDate|date('d/m/Y') }}</p>
-    
+    <a class="btn btn-warning" href={{ path('update_author', {id: author.id}) }}>Modifier cet auteur</a>
 {% endblock %}
+
