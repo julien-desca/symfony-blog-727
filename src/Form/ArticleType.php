@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Author;
+use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,13 @@ class ArticleType extends AbstractType{
                     'choice_label' => function($author){
                         return $author->getFirstName() . " " . $author->getLastName();
                     },
+                ])
+                ->add('categories', EntityType::class, [
+                    'label' => 'Categorie de l\'article',
+                    'class' => Category::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true,
                 ])
                 ->add('save', SubmitType::class, ['label' => 'Enregister']);
     }
