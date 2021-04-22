@@ -11,5 +11,26 @@
             <li>{{category.name}}</li>
         {% endfor %}
     </ul>
+
+    <hr/>
+
+    <div class="row">
+        <div class="col-6">
+            <div>
+            {% for comment in article.comments %}
+                <h5>{{ comment.authorName }}
+                    le {{ comment.createdAt|date('d/m/Y') }} 
+                    à {{ comment.createdAt|date('h:i') }}</h5>
+                <p>{{ comment.content }}</p>    
+            {% endfor %}
+            </div>
+        </div>
+        <div class="col-6">
+            <h2>Nouveau commentaire</h2>
+            {{form(form)}}
+        </div>
+    </div>
+    <hr/>
+
     <a class="btn btn-warning" href={{ path('update_article', {id: article.id}) }}>Modifier l'article</a>
 {% endblock %}

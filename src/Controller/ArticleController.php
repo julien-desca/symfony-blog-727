@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Repository\ArticleRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +67,23 @@ class ArticleController extends AbstractController{
         if($article == null){
             throw new HttpException(404, "Article not found");
         }
-        return $this->render("articles/detail.html.twig", ['article'=>$article]);
+
+        //enregistrement d'un commentaire
+        $comment = new Comment();
+        //a quelle article correspond le commentaire ?
+        $comment->setArticle($article);
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $comment->setCreatedAt(new DateTime());
+            $this->manager->persist($comment);
+            $this->manager->flush();
+        }
+
+        return $this->render("articles/detail.html.twig", [
+            'article'=>$article,
+            'form'=>$form->createView()
+        ]);
     }
 
     /**
